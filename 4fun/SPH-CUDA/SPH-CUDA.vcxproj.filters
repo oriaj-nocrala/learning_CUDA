@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="opengl">
+      <UniqueIdentifier>{0146d373-f44e-4103-b099-67271fdeb15f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="opengl\shader">
+      <UniqueIdentifier>{42ec4e19-a40b-4c1d-afd2-2e90583b1366}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="opengl\renderer">
+      <UniqueIdentifier>{2754b9b4-fbcc-4740-9d32-d30b14589985}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="parameter_files">
+      <UniqueIdentifier>{419c80a3-5cfc-4501-b30a-a7ad2f0b65c3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="calculate_density.cuh">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="calculate_force.cuh">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="cell_structure.cuh">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="integrators.cuh">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="src\Shaders\shader.fs">
+      <Filter>opengl\renderer</Filter>
+    </None>
+    <None Include="src\Shaders\shader.vs">
+      <Filter>opengl\renderer</Filter>
+    </None>
+    <None Include="parameter_files\params_0.par">
+      <Filter>parameter_files</Filter>
+    </None>
+    <None Include="parameter_files\params_working.par">
+      <Filter>parameter_files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="error_checker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="file_manager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="helper_math.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="helper_structs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="libs\camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\box.h">
+      <Filter>opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sphere.h">
+      <Filter>opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Shaders\Shader.h">
+      <Filter>opengl\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer\AttributeBufferLayout.h">
+      <Filter>opengl\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer\IndexBuffer.h">
+      <Filter>opengl\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer\Renderer.h">
+      <Filter>opengl\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer\VertexArrayObject.h">
+      <Filter>opengl\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer\VertexBuffer.h">
+      <Filter>opengl\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="visualizer.h">
+      <Filter>opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="libs\gltext.h">
+      <Filter>opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MarchingCubes\CudaGrid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CudaCompile Include="main.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\box.cpp">
+      <Filter>opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sphere.cpp">
+      <Filter>opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Shaders\Shader.cpp">
+      <Filter>opengl\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Renderer\AttributeBufferLayout.cpp">
+      <Filter>opengl\shader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Renderer\IndexBuffer.cpp">
+      <Filter>opengl\shader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Renderer\Renderer.cpp">
+      <Filter>opengl\shader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Renderer\VertexArrayObject.cpp">
+      <Filter>opengl\shader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Renderer\VertexBuffer.cpp">
+      <Filter>opengl\shader</Filter>
+    </ClCompile>
+    <ClCompile Include="visualizer.cpp">
+      <Filter>opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MarchingCubes\CudaGrid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MarchingCubes\skel\MarchingCubes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

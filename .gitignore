@@ -1,0 +1,78 @@
+# CUDA compiled binaries
+*.o
+*.out
+a.out
+
+# Build directories
+build/
+cmake-build-*/
+
+# CUDA/GPU specific
+*.ptx
+*.cubin
+*.fatbin
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.cmake
+
+# Visual Studio
+*.vcxproj.user
+Debug/
+Release/
+x64/
+.vs/
+
+# Executables and binaries
+*.exe
+*.app
+template
+fluids
+bolas_cuda_grid
+*_cuda
+dibujar_cuda
+
+# Object files
+*.o
+*.obj
+
+# Libraries
+*.lib
+*.a
+*.so
+*.dll
+*.dylib
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.temp
+
+# Log files
+*.log
+
+# Images (if generated)
+*.png
+*.jpg
+*.jpeg
+*.bmp
+*.tiff
+
+# Models and large files
+*.onnx
+*.pth
+*.pt
+*.h5
+
+# OS specific
+.DS_Store
+Thumbs.db

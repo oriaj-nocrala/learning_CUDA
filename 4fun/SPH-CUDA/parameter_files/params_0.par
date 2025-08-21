@@ -1,0 +1,32 @@
+movable_particle_num	25326
+timestep				0.005
+
+integrator				euler
+
+h						0.14
+
+k						0.5
+p0						1.4
+e						0.05
+s						0.1
+mass					0.0007
+g						-9.81
+
+boundary_damping		0.3
+wall_density			2.9
+min_box_x				-1.4
+min_box_y				-0.0
+min_box_z				-1.4
+max_box_x				1.4
+max_box_y				2.8
+max_box_z				5.6
+
+threads_per_group		128
+
+spawn_dist				0.07
+boundary_spawn_dist		0.03
+spawn_off_x				0.0
+spawn_off_y				1.4
+spawn_off_z				0.0
+
+particle_radius			0.02
