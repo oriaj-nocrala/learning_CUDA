@@ -1,1 +1,0 @@
-nvcc -std=c++17 -O3 main_pairwise.cu glad.c -I. -lglfw -lGL -o template_pairwise && ./template_pairwise

@@ -121,7 +121,9 @@ int main() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    GLFWwindow* window = glfwCreateWindow(WIN_SIZE, WIN_SIZE, "Bolas Cayendo con CUDA (Spatial Grid)", NULL, NULL);
+    glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE); // Ensure double buffering
+    glfwWindowHint(GLFW_REFRESH_RATE, GLFW_DONT_CARE); // Don't care about refresh rate
+    GLFWwindow* window = glfwCreateWindow(WIN_SIZE, WIN_SIZE, "Bolas Cayendo con CUDA (Benchmark - VSync OFF)", NULL, NULL);
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
@@ -129,7 +131,17 @@ int main() {
     InputHandler input_handler(camera, box_center);
     input_handler.setup_callbacks(window);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    glfwSwapInterval(1);
+    
+    // Multiple attempts to disable VSync
+    glfwSwapInterval(0); // Disable VSync for maximum FPS
+    
+    // Check and report VSync status
+    std::cout << "VSync disabled. Expected unlimited FPS..." << std::endl;
+    std::cout << "Monitor refresh rate detected: Check if FPS exceeds this" << std::endl;
+    
+    // Try to get actual swap interval
+    int swapInterval = glfwExtensionSupported("GLX_EXT_swap_control") ? 1 : 0;
+    std::cout << "Swap control extension: " << (swapInterval ? "Available" : "Not available") << std::endl;
 
     // 2. Inicializar CUDA
     CHECK_CUDA(cudaSetDevice(0));
@@ -245,21 +257,38 @@ int main() {
     int threadsPerBlock = 256;
     int blocksPerGrid = (NUM_BALLS + threadsPerBlock - 1) / threadsPerBlock;
 
-    // Variables para el contador de FPS
-    double lastFPSTime = 0.0;
+    // Variables para el contador de FPS (método dual para verificación)
+    double lastFPSTime = glfwGetTime(); // Initialize properly
     int frameCount = 0;
+    
+    // Segundo método de FPS para verificación
+    double frameStartTime = glfwGetTime();
+    int totalFrames = 0;
 
     // 6. Bucle principal
     while (!glfwWindowShouldClose(window)) {
         float currentTime = glfwGetTime(); float dt = currentTime - lastTime; lastTime = currentTime;
         if (dt > 0.016f) dt = 0.016f; // Limitar dt para estabilidad
 
-        // Calcular y mostrar FPS
+        // Calcular y mostrar FPS con doble verificación
         frameCount++;
-        if (currentTime - lastFPSTime >= 1.0) {
+        totalFrames++;
+        
+        if (currentTime - lastFPSTime >= 0.5) { // Update every 0.5s
+            double elapsed = currentTime - lastFPSTime;
+            double instantFPS = (double)frameCount / elapsed;
+            double averageFPS = (double)totalFrames / (currentTime - frameStartTime);
+            double frameTimeMs = elapsed * 1000.0 / frameCount;
+            
             char title[256];
-            sprintf(title, "Bolas Cayendo con CUDA (Spatial Grid) - %.2f FPS", (double)frameCount / (currentTime - lastFPSTime));
+            sprintf(title, "CUDA - Instant: %.0f FPS | Avg: %.0f FPS | %.2f ms/frame", 
+                   instantFPS, averageFPS, frameTimeMs);
             glfwSetWindowTitle(window, title);
+            
+            // Also print to console for verification
+            printf("FPS Check: Instant=%.1f, Average=%.1f, FrameTime=%.3fms\n", 
+                   instantFPS, averageFPS, frameTimeMs);
+            
             frameCount = 0;
             lastFPSTime = currentTime;
         }
@@ -365,6 +394,21 @@ int main() {
                 CHECK_CUDA(cudaPeekAtLastError());
             }
             input_handler.interaction_requested = false;
+        }
+
+        // Aplicar fuerza en área si se está arrastrando
+        if (input_handler.is_area_force_active && !input_handler.box_drag_modifier_active) {
+            // Calcular el punto en el espacio 3D donde aplicar la fuerza
+            float force_distance = 10.0f; // Distancia del punto de aplicación desde la cámara
+            vec3 force_center = {ray_origin.x + ray_direction.x * force_distance, 
+                               ray_origin.y + ray_direction.y * force_distance, 
+                               ray_origin.z + ray_direction.z * force_distance};
+            
+            float force_radius = 1.5f; // Radio de influencia
+            float force_strength = 5.0f; // Intensidad de la fuerza
+            
+            apply_area_force_kernel<<<blocksPerGrid, threadsPerBlock>>>(d_balls, force_center, ray_direction, force_radius, force_strength);
+            CHECK_CUDA(cudaPeekAtLastError());
         }
 
         // Dibujar las bolas (con instancing)
