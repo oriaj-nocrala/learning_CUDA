@@ -47,7 +47,7 @@ __global__ void collide_kernel(Ball* balls, vec3* forces, unsigned int* sorted_v
     int i_sorted = blockIdx.x * blockDim.x + threadIdx.x;
     if (i_sorted >= NUM_BALLS) return;
 
-    int i_original = sorted_values[i_sorted];
+    int i_original = __ldg(&sorted_values[i_sorted]);
     vec3 pos1 = balls[i_original].pos;
     vec3 vel1 = balls[i_original].vel;
 
@@ -66,13 +66,13 @@ __global__ void collide_kernel(Ball* balls, vec3* forces, unsigned int* sorted_v
                 if (nx < 0 || nx >= GRID_DIM_X || ny < 0 || ny >= GRID_DIM_Y || nz < 0 || nz >= GRID_DIM_Z) continue;
 
                 unsigned int neighbor_hash = nz * (GRID_DIM_X * GRID_DIM_Y) + ny * GRID_DIM_X + nx;
-                int start = cell_starts[neighbor_hash];
+                int start = __ldg(&cell_starts[neighbor_hash]);
                 if (start == -1) continue; // Celda vacía
-                int end = cell_ends[neighbor_hash];
+                int end = __ldg(&cell_ends[neighbor_hash]);
 
                 // Comprobar colisiones con las pelotas de la celda vecina
                 for (int j_sorted = start; j_sorted < end; ++j_sorted) {
-                    int j_original = sorted_values[j_sorted];
+                    int j_original = __ldg(&sorted_values[j_sorted]);
                     if (i_original >= j_original) continue; // Evitar dobles cálculos y auto-colisión
 
                     vec3 pos2 = balls[j_original].pos;
